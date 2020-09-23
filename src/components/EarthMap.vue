@@ -278,10 +278,12 @@
 </template>
 <script>
 const geoserverUrl = window.UrlSetting.baseUrl + "/geoserver";
-const layer = "http://220.181.130.171:9090/gisserver/tiles/mbtiles/Global_Image/{z}/{x}/{reverseY}.jpg";
+// const layer = "http://220.181.130.171:9090/gisserver/tiles/mbtiles/Global_Image/{z}/{x}/{reverseY}.jpg";
+// const layer = "http://10.10.20.43:32771/gisserver/tiles/m btiles/Global_Image/{z}/{x}/{reverseY}.jpg";
+const layer = "http://10.10.20.43:32771/gisserver/rest/basemap/BaseImage/{z}/{x}/{y}.jpg";
 //window.UrlSetting.baseUrl + "/gisserver/tiles/mbtiles/Global_Image/{z}/{x}/{reverseY}.jpg";
-const layer1 =
-  "http://220.181.130.171:9090/gisserver/tiles/mbtiles/hanzhong/{z}/{x}/{reverseY}.jpg";
+// const layer1 = "http://220.181.130.171:9090/gisserver/tiles/mbtiles/hanzhong/{z}/{x}/{reverseY}.jpg";
+const layer1 = "http://10.10.20.43:32771/gisserver/tiles/mbtiles/hanzhong/{z}/{x}/{reverseY}.jpg";
 
 const wmtsUrl = window.UrlSetting.baseUrl + "/geoserver/gwc/service/wmts";
 const terrain = window.UrlSetting.DEM_URL;
@@ -587,6 +589,15 @@ export default {
             for (let z = 0; z <= item.zoomStop; z += 1) {
               item.matrixIds[z] = `${item.srs}:${z}`;
             }
+            var item ={
+              "type":"wmts",
+              "url":"http://10.10.20.43:32771/geoserver/gwc/service/wmts",
+              "layer":"image:1600777178295",
+              "srs":"EPSG:4326","format":"image/png","zoomStart":12,"zoomStop":17,
+              "resolutions":[0.000171661376953125,0.0000858306884765625,0.00004291534423828125,0.000021457672119140625,0.000010728836059570312,0.000005364418029785156],
+              "matrixIds":["EPSG:4326:0","EPSG:4326:1","EPSG:4326:2","EPSG:4326:3","EPSG:4326:4","EPSG:4326:5","EPSG:4326:6","EPSG:4326:7","EPSG:4326:8","EPSG:4326:9","EPSG:4326:10","EPSG:4326:11","EPSG:4326:12","EPSG:4326:13","EPSG:4326:14","EPSG:4326:15","EPSG:4326:16","EPSG:4326:17"],
+              "extent":{"miny":23.875335200751948,"minx":110.02568410848943,"maxy":24.306751200751947,"maxx":110.36184410848944}
+              }
             this.addeRsettlementLayer(item, 2, true);
             if (projectName === "xxx安置点") {
               this.flyTo(106.296158, 33.0540845, 1000);
@@ -617,6 +628,16 @@ export default {
       });
       //添加最下层影像
       if (serviceIds.length > 1) {
+        var item ={
+          "type":"wmts",
+          "url":"http://10.10.20.43:32771/geoserver/gwc/service/wmts",
+          "layer":"image:1599914640842",
+          "srs":"EPSG:4326","format":"image/png","zoomStart":12,"zoomStop":17,
+          "resolutions":[0.000171661376953125,0.0000858306884765625,0.00004291534423828125,0.000021457672119140625,0.000010728836059570312,0.000005364418029785156],
+          "matrixIds":["EPSG:4326:0","EPSG:4326:1","EPSG:4326:2","EPSG:4326:3","EPSG:4326:4","EPSG:4326:5","EPSG:4326:6","EPSG:4326:7","EPSG:4326:8","EPSG:4326:9","EPSG:4326:10","EPSG:4326:11","EPSG:4326:12","EPSG:4326:13","EPSG:4326:14","EPSG:4326:15","EPSG:4326:16","EPSG:4326:17"],
+          "extent":{"miny":23.875335200751948,"minx":110.02568410848943,"maxy":24.306751200751947,"maxx":110.36184410848944}
+          }
+        this.addImageLayers(item, 1);
         getlayermeta(serviceIds[0]).then(res1 => {
           console.log('添加下层影像',serviceIds,res1)
           res1.forEach(item => {
@@ -625,7 +646,18 @@ export default {
               for (let z = 0; z <= item.zoomStop; z += 1) {
                 item.matrixIds[z] = `${item.srs}:${z}`;
               }
+              var item ={
+                "type":"wmts",
+                "url":"http://10.10.20.43:32771/geoserver/gwc/service/wmts",
+                "layer":"image:1599914640842",
+                "srs":"EPSG:4326","format":"image/png","zoomStart":12,"zoomStop":17,
+                "resolutions":[0.000171661376953125,0.0000858306884765625,0.00004291534423828125,0.000021457672119140625,0.000010728836059570312,0.000005364418029785156],
+                "matrixIds":["EPSG:4326:0","EPSG:4326:1","EPSG:4326:2","EPSG:4326:3","EPSG:4326:4","EPSG:4326:5","EPSG:4326:6","EPSG:4326:7","EPSG:4326:8","EPSG:4326:9","EPSG:4326:10","EPSG:4326:11","EPSG:4326:12","EPSG:4326:13","EPSG:4326:14","EPSG:4326:15","EPSG:4326:16","EPSG:4326:17"],
+                "extent":{"miny":23.875335200751948,"minx":110.02568410848943,"maxy":24.306751200751947,"maxx":110.36184410848944}
+                }
               this.addImageLayers(item, 1);
+              
+              // console.log('item',JSON.stringify(item))
             }
           });
         });
@@ -956,10 +988,10 @@ export default {
       
       const matrixIds = new Array();
       this.extent = {
-        west: data.extent.minx,
-        south: data.extent.miny,
-        east: data.extent.maxx,
-        nonth: data.extent.maxy
+        west: data.extent.minx,    //最西的纬度
+        south: data.extent.miny,  //最南的纬度
+        east: data.extent.maxx,   //最东的经度
+        nonth: data.extent.maxy   //最北的纬度
       };
       console.log('添加影像',data,level)
       this.currentLayer1 = new Cesium.ImageryLayer(
@@ -972,12 +1004,12 @@ export default {
           tileMatrixLabels: data.matrixIds,
           maximumLevel: data.zoomStop,
           minimumLevel: data.zoomStart,
-          tilingScheme: new Cesium.GeographicTilingScheme(),
+          tilingScheme: new Cesium.GeographicTilingScheme(),//其中经度和纬度直接映射到X和Y。这种投影通常是被称为地理，等矩形，等距圆柱或板状
           rectangle: Cesium.Rectangle.fromDegrees(
-            this.extent.west,
-            this.extent.south,
-            this.extent.east,
-            this.extent.nonth
+            this.extent.west, 
+            this.extent.south, 
+            this.extent.east,  
+            this.extent.nonth  
           )
         })
       );
