@@ -6,7 +6,7 @@
 
 const BaseIp = "10.10.20.43:32771";
 const serviceIp = "10.10.20.43:32771";
-const geoserviceIp = "http://10.10.20.43:32771";
+const geoserviceIp = "10.10.20.43:32771";
 const layersIp = "10.10.20.43:32771";
 const tilesIp = "10.10.20.43:32771";
 

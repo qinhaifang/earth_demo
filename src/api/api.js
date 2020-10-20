@@ -80,7 +80,7 @@ export function getfileMeta(id) {
 }
 export function getlayermeta(id) {
   return fetch.get(
-    `${baseUrl}/gisserver/rest/layermeta/meta?id=${id}&access_token=`
+    `${baseUrl}/gisserver/rest/imageservice/meta?id=${id}&access`
   );
 }
 export function getJsonById(id) {
